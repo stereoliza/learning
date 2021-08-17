@@ -29,7 +29,7 @@ def insert_data():
     cursor.execute(query,query_values)
     db.commit()
 
-for locatio in TABLES:
+for location in TABLES:
     table_description = TABLES['location']
     try:
         cursor.execute(table_description)
