@@ -4,6 +4,9 @@ from mysql.connector import errorcode
 import requests
 import redis, json
 
+url = 'http://ip-api.com/json/76.170.183.186'
+ip = '76.170.183.186'
+
 
 def cache_in_file():
     response = None
