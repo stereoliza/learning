@@ -1,52 +1,46 @@
 import mysql.connector as mysql
 from mysql.connector import errorcode
-from get_url import get_response
-from get_ip import ip
+
+host = 'localhost'
+user = 'root'
+password = 'pass'
+mydb = 'learningdb'
+
+db = mysql.connect(host=host,
+                   user=user,
+                   password=password,
+                   database=mydb)
+cursor = db.cursor()
+
+TABLES = {}
+TABLES['city_ip'] = (
+    "CREATE TABLE IF NOT EXISTS `city_ip` ("
+    "  `ipaddress` varchar(25),"
+    "  `address` varchar(255),"
+    "  PRIMARY KEY (`ipaddress`)"
+    ") ENGINE=InnoDB")
 
 
-def cache_in_mysql():
-    host = 'localhost'
-    user = 'root'
-    password = 'pass'
-    mydb = 'learningdb'
-
-    db = mysql.connect(host=host,
-                       user=user,
-                       password=password,
-                       database=mydb)
-    cursor = db.cursor()
-
-    TABLES = {}
-    TABLES['location'] = (
-        "CREATE TABLE `location` ("
-        "  `ip` varchar(25),"
-        "  `address` varchar(255),"
-        "  PRIMARY KEY (`ip`)"
-        ") ENGINE=InnoDB")
-
-    def insert_data():
-        mysql_response = get_response
-        query = 'INSERT INTO location(ip,address) VALUES (%s,%s)'
-        query_values = (ip, str(mysql_response['city']))
-        cursor.execute(query, query_values)
-
-    for location in TABLES:
-        table_description = TABLES['location']
-        try:
-            cursor.execute(table_description)
-        except mysql.Error as err:
-            if err.errno == errorcode.ER_TABLE_EXISTS_ERROR:
-                cursor.execute('SELECT address from location')
-                record = cursor.fetchone()
-                if record is None:
-                    insert_data()
-                    cursor.execute('SELECT address from location')
-                    record = cursor.fetchone()
-            else:
-                print(err.msg)
-        else:
-            insert_data()
+def open_db():
+    try:
+        table_description = TABLES['city_ip']
+    except mysql.Error as err:
+        if err.errno == errorcode.ER_TABLE_EXISTS_ERROR:
+            pass
+    else:
+        cursor.execute(table_description)
 
 
-    print(record)
-    cursor.close()
+def get_from_mysql(ip):
+    find = "SELECT address FROM city_ip WHERE ipaddress = %s"
+    ip_value = (ip, )
+    cursor.execute(find, ip_value)
+    record = cursor.fetchone()
+    return record
+
+
+def insert_data(ip, response):
+    insert = "INSERT INTO city_ip (ipaddress, address) VALUES (%s,%s)"
+    insert_values = (ip, response)
+    cursor.execute(insert, insert_values)
+    db.commit()

@@ -1,19 +1,16 @@
-from get_url import get_response
+file = open('address.txt', 'w+')
 
 
-def cache_in_file():
-    file_response = None
-    try:
-        file_response = open('address.txt', 'w+')
-        location = file_response.read()
-        if location !='':
-            location = file_response.read()
-            print(location)
-        else:
-            file_response = open('address.txt', 'w')
-            location = get_response
-            file_response.write(str(location['city']))
-            print(str(location['city']))
-    finally:
-        if file_response:
-            file_response.close()
+def get_from_file():
+    location = file.read()
+    print(location)
+    return location
+
+
+def write_in_file(response):
+    file.write(response)
+    print(response)
+
+
+def close():
+    file.close()

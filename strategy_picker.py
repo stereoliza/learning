@@ -1,16 +1,37 @@
-import get_url
-import mysql_cache_strategy
-import redis_cache_strategy
-import file_cache_strategy
+import cache.mysql_cache_strategy
+import cache.redis_cache_strategy
+import cache.file_cache_strategy
+from get_url import get_response
 
 
-def get_location():
+def get_location(ip):
+    response = get_response(ip)
     try:
-        mysql_cache_strategy.cache_in_mysql()
+        cache.mysql_cache_strategy.open_db()
+        location = cache.mysql_cache_strategy.get_from_mysql(ip)
+        if location is None:
+            print(response)
+            cache.mysql_cache_strategy.insert_data(ip, response)
+        else:
+            print(location)
     except:
         try:
-            redis_cache_strategy.cache_in_redis()
+            location = cache.redis_cache_strategy.get_from_cache_redis(ip)
+            if location is None:
+                cache.redis_cache_strategy.set_in_redis(ip, response)
+            else:
+                print(location)
         except:
-            file_cache_strategy.cache_in_file()
+            try:
+                location = cache.file_cache_strategy.get_from_file()
+                print(location)
+                if location == '':
+                    cache.file_cache_strategy.write_in_file(response)
+                else:
+                    print(location)
+            finally:
+                cache.file_cache_strategy.close()
     finally:
         print("Success")
+
+

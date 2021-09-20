@@ -4,19 +4,17 @@ This tool allows you to find location of any IP address.
 
 ## Getting started
 Make sure to have following files: 
-* mysql_cache_strategy.py
-* redis_cache_strategy.py
-* file_cache_strategy.py
+* cache/mysql_cache_strategy.py
+* cache/redis_cache_strategy.py
+* cache/file_cache_strategy.py
 * strategy_picker.py
 * get_url.py
-* get_ip.py
 * get_location.py
 
 ## Usage
 
-1. Open file **get_ip.py** and insert ip address which location you'd like to find.
+Run **get_location.py** following IP address
 
-```python
-ip = '84.97.152.193'
+Example:
+```python3 get_location.py 163.133.230.86
 ```
-2. Run **get_location.py**

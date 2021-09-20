@@ -1,3 +1,5 @@
-from strategy_picker import get_location
+import strategy_picker
+import sys
 
-get_location()
+ip = str(sys.argv[1])
+strategy_picker.get_location(ip)
