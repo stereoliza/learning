@@ -16,5 +16,8 @@ Make sure to have following files:
 Run **get_location.py** following IP address
 
 Example:
-```python3 get_location.py 163.133.230.86
+```
+
+% python3 get_location.py 163.133.230.86
+
 ```
