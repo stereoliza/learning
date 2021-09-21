@@ -1,11 +1,9 @@
 import cache.mysql_cache_strategy
 import cache.redis_cache_strategy
 import cache.file_cache_strategy
-from get_url import get_response
 
 
-def get_location(ip):
-    response = get_response(ip)
+def get_value(ip, response):
     try:
         cache.mysql_cache_strategy.open_db()
         location = cache.mysql_cache_strategy.get_from_mysql(ip)
@@ -33,5 +31,3 @@ def get_location(ip):
                 cache.file_cache_strategy.close()
     finally:
         print("Success")
-
-
