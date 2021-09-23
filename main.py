@@ -4,4 +4,12 @@ import sys
 
 ip = str(sys.argv[1])
 response = get_response(ip)
-cache.get_value(ip, response)
+
+try:
+    location = cache.get_value(ip)
+    if location is None:
+        location = cache.set_value(ip, response)
+    else:
+        print(location)
+finally:
+    print('Success!')

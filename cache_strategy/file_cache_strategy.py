@@ -1,10 +1,10 @@
-file = open('address.txt', 'w+')
+file = open('cache.txt', 'w+')
 
 
 def get_from_file():
-    location = file.read()
-    print(location)
-    return location
+    response = file.read()
+    print(response)
+    return response
 
 
 def write_in_file(response):

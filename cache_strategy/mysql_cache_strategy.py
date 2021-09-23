@@ -13,17 +13,17 @@ db = mysql.connect(host=host,
 cursor = db.cursor()
 
 TABLES = {}
-TABLES['city_ip'] = (
-    "CREATE TABLE IF NOT EXISTS `city_ip` ("
-    "  `ipaddress` varchar(25),"
-    "  `address` varchar(255),"
-    "  PRIMARY KEY (`ipaddress`)"
+TABLES['key_value'] = (
+    "CREATE TABLE IF NOT EXISTS `key_value` ("
+    "  `key` varchar(25),"
+    "  `value` varchar(255),"
+    "  PRIMARY KEY (`key`)"
     ") ENGINE=InnoDB")
 
 
 def open_db():
     try:
-        table_description = TABLES['city_ip']
+        table_description = TABLES['key_value']
     except mysql.Error as err:
         if err.errno == errorcode.ER_TABLE_EXISTS_ERROR:
             pass
@@ -31,16 +31,16 @@ def open_db():
         cursor.execute(table_description)
 
 
-def get_from_mysql(ip):
-    find = "SELECT address FROM city_ip WHERE ipaddress = %s"
-    ip_value = (ip, )
-    cursor.execute(find, ip_value)
+def get_from_mysql(key):
+    find = "SELECT value FROM key_value WHERE key = %s"
+    key_value = (key, )
+    cursor.execute(find, key_value)
     record = cursor.fetchone()
     return record
 
 
-def insert_data(ip, response):
-    insert = "INSERT INTO city_ip (ipaddress, address) VALUES (%s,%s)"
-    insert_values = (ip, response)
+def insert_data(key, response):
+    insert = "INSERT INTO key_value (key, value) VALUES (%s,%s)"
+    insert_values = (key, response)
     cursor.execute(insert, insert_values)
     db.commit()
