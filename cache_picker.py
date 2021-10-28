@@ -38,6 +38,7 @@ class CacheService:
 
     def set_value(self, key, value):
         self.__get_strategy().set_data(key, value)
+        print(value)
         return value
 
     def __get_strategy(self):
