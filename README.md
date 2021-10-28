@@ -4,10 +4,8 @@ This tool allows you to find location of any IP address.
 
 ## Getting started
 Make sure to have following files: 
-* cache_strategy/mysql_cache_strategy.py
-* cache_strategy/redis_cache_strategy.py
-* cache_strategy/file_cache_strategy.py
-* cache.py
+* cache_class
+* cache_picker
 * location.py
 * main.py
 
