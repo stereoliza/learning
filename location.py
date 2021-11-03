@@ -6,9 +6,8 @@ import ipaddress
 def validate_ip_address(ip):
     try:
         ipaddress.ip_address(ip)
-    except ValueError as e:
+    except ValueError:
         print('Please, enter valid IP address')
-        print(e)
         raise ValueError
     else:
         return True
