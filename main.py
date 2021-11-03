@@ -1,21 +1,14 @@
-from cache_picker import CacheService
-from location import get_response
+from location import find_location
 import sys
 
-ip = str(sys.argv[1])
+ip = sys.argv[1]
+
+location = find_location(str(ip))
+print(location)
 
 
-def find_location(ip):
-    try:
-        finder = CacheService()
-        location = finder.get_value(ip)
-        if location is None:
-            response = get_response(ip)
-            finder.set_value(ip, response)
-        else:
-            print(location)
-    finally:
-        print('Success!')
+#ip = '174.176.60.140'
+#ip = str(sys.argv[1])
 
 
-find_location(ip)
+

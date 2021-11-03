@@ -22,6 +22,12 @@ class CacheStrategy(ABC):
         pass
 
 
+    @staticmethod
+    def validate_value(value):
+        if value is None:
+            raise ValueError('Value can not be None')
+
+
 class MySQLStrategy(CacheStrategy):
 
     def __init__(self, host='localhost', user='root', password='pass', dbname='learningdb'):
@@ -88,6 +94,7 @@ class MySQLStrategy(CacheStrategy):
         """
         self.__check_if_table_exists()
         get_value = "SELECT `value` FROM key_value WHERE `key` = %s"
+        self.validate_value(key)
         key_v = (key,)
         self.cursor.execute(get_value, key_v)
         result = self.cursor.fetchone()
@@ -104,6 +111,8 @@ class MySQLStrategy(CacheStrategy):
         """
         insert = "INSERT INTO key_value (`key`, `value`) VALUES (%s,%s)"
         insert_values = (key, value)
+        self.validate_value(key)
+        self.validate_value(value)
         self.cursor.execute(insert, insert_values)
         self.connection.commit()
 
@@ -149,12 +158,15 @@ class RedisStrategy(CacheStrategy):
         return False
 
     def get_data(self, key):
+        self.validate_value(key)
         result = self.redis_client.get(key)
         if result:
             return result
         return None
 
     def set_data(self, key, value):
+        self.validate_value(key)
+        self.validate_value(value)
         self.redis_client.set(key, value)
         print(value)
         return value
@@ -197,5 +209,6 @@ class FileStrategy(CacheStrategy):
         open(self.name, "r").close()
         return value
 
-    def delete_data(self, key):
+    def delete_data(self):
+        open(self.name, "w")
         self.file.close()
